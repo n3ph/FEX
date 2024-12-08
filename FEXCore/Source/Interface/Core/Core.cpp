@@ -366,12 +366,6 @@ void ContextImpl::HandleCallback(FEXCore::Core::InternalThreadState* Thread, uin
 void ContextImpl::ExecuteThread(FEXCore::Core::InternalThreadState* Thread) {
   Dispatcher->ExecuteDispatch(Thread->CurrentFrame);
 
-  {
-    // Ensure the Code Object Serialization service has fully serialized this thread's data before clearing the cache
-    // Use the thread's object cache ref counter for this
-    CodeSerialize::CodeObjectSerializeService::WaitForEmptyJobQueue(&Thread->ObjectCacheRefCounter);
-  }
-
   // If it is the parent thread that died then just leave
   FEX_TODO("This doesn't make sense when the parent thread doesn't outlive its children");
 }
